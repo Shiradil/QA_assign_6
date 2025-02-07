@@ -1,0 +1,98 @@
+{{define "title"}}Home{{end}}
+{{define "main"}}
+<h2>Latest Posts</h2>
+
+<form action="/" method="GET" style="margin-bottom: 1rem;">
+  <label for="category">Category:</label>
+  <select name="category" id="category" onchange="this.form.submit()">
+    <option value="0" {{if eq .CurrentCatID 0}}selected{{end}}>All</option>
+    {{range .Categories}}
+      <option value="{{.ID}}" {{if eq $.CurrentCatID .ID}}selected{{end}}>{{.Name}}</option>
+    {{end}}
+  </select>
+
+  <label for="pageSize">Posts per page:</label>
+  <select name="pageSize" id="pageSize" onchange="this.form.submit()">
+    <option value="5" {{if eq $.PageSize 5}}selected{{end}}>5</option>
+    <option value="10" {{if eq $.PageSize 10}}selected{{end}}>10</option>
+    <option value="20" {{if eq $.PageSize 20}}selected{{end}}>20</option>
+    <option value="50" {{if eq $.PageSize 50}}selected{{end}}>50</option>
+  </select>
+
+  <input type="hidden" name="page" value="{{.CurrentPage}}" />
+
+  <noscript><button type="submit">Filter</button></noscript>
+</form>
+
+<div class="posts-container">
+  {{with .PostsByUser}} 
+    {{range .}}
+    <div class="post-card post-card-small">
+      <div class="card-header">
+        <div class="user-data">
+          <div class="post-card-NameDate">
+            <p class="post-card-Username">By {{.OwnerName}} {{if ne .ImgUrl ""}}(image included){{end}}</p>
+            <span class="post-card-Date">
+              <time datetime="">{{humanDate .CreatedAt}}</time>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="content">
+        <div class="title">
+          <a href="/post/view?id={{.ID}}" class="titleHome">{{.Title}}</a>
+        </div>
+        <div class="desc">
+          <pre class="postText_short truncated-text">{{.Content}}</pre>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="category-tags-wrapper">
+          <p class="category-tag">{{.CategoryName}}</p>
+        </div>
+        <div class="reactions-wrapper">
+          <div class="reaction-container">
+            <i class="fa fa-comment no-color"></i>
+            <p>{{.CommentCount}}</p>
+          </div>
+          <div class="reaction-container">
+            <form action="/post/reaction?id={{.ID}}" method="POST">
+              <button class="reaction-button" type="submit" name="reaction" value="like">
+                <i class="fa fa-thumbs-up {{if .IsLiked}}green{{else}}no-color{{end}}"></i>
+                {{.LikeCount}}
+              </button>
+            </form>
+          </div>
+          <div class="reaction-container">
+            <form action="/post/reaction?id={{.ID}}" method="POST">
+              <button class="reaction-button" type="submit" name="reaction" value="dislike">
+                <i class="fa fa-thumbs-down {{if .IsDisliked}}red{{else}}no-color{{end}}"></i>
+                {{.DislikeCount}}
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{end}} 
+  {{else}}
+    <p>No posts available.</p>
+  {{end}}
+</div>
+
+<div class="pagination" style="margin-top: 1rem;">
+  {{if gt .CurrentPage 1}}
+  <a href="/?page={{sub .CurrentPage 1}}&category={{.CurrentCatID}}&pageSize={{.PageSize}}">Prev</a>
+  {{end}}
+
+  {{range .VisiblePages}}
+  <a href="/?page={{.}}&category={{$.CurrentCatID}}&pageSize={{$.PageSize}}" 
+     {{if eq . $.CurrentPage}}class="active"{{end}}>{{.}}</a>
+  {{end}}
+
+  {{if lt .CurrentPage .TotalPages}}
+  <a href="/?page={{add .CurrentPage 1}}&category={{.CurrentCatID}}&pageSize={{.PageSize}}">Next</a>
+  {{end}}
+</div>
+
+{{end}}

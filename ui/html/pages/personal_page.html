@@ -1,0 +1,101 @@
+{{define "title"}}Personal page{{end}}
+
+{{define "main"}}
+<div class="personal-page-wrapper">
+
+<div class="personal-page-section">
+<h2>Personal page</h2>
+<div class="snippet">
+    <div class="metadata">
+        <strong>Username: {{.User.Username}} </strong>
+        <span>Email: {{.User.Email }} </span>
+    </div>
+</div>
+</div>
+
+
+<div class="personal-page-section">
+    <h2>My Posts</h2>
+{{if .Posts}}  
+<table>
+<tr>
+<th>Title</th>
+<th>Created</th>
+<th>ID</th>
+<th>Actions</th>
+<th></th>
+</tr>
+{{range .Posts}}
+<tr>
+
+<td><a href='/post/view?id={{.ID}}'>{{.Title}}</a></td>
+<td>{{humanDate .CreatedAt}}</td>
+<td>#{{.ID}}</td>
+<td><a href='/post/edit?id={{.ID}}'>Edit</a></td>
+
+<td>
+    <form action="/post/delete?id={{.ID}}" method="post">
+            <input type="submit" value="Delete">
+    </form>
+</td>
+</tr>
+{{end}}
+</table>
+{{end}}  
+
+</div>
+<div class="personal-page-section">
+<h2>Liked Posts</h2>
+{{if .LikedPosts}}  
+<table>
+<tr>
+<th>Title</th>
+<th>Created</th>
+<th>ID</th>
+</tr>
+{{range .LikedPosts}}
+<tr>
+
+<td><a href='/post/view?id={{.ID}}'>{{.Title}}</a></td>
+<td>{{humanDate .CreatedAt}}</td>
+<td>#{{.ID}}</td>
+</tr>
+{{end}}
+</table>
+{{end}}  
+
+</div>
+<div class="personal-page-section">
+
+<h2>Your comments</h2>
+
+{{if .CommentPostAddition}}  
+<table>
+<tr>
+<th>Post Title</th>
+<th>Comment</th>
+<th>Created</th>
+<th>ID</th>
+</tr>
+{{range .CommentPostAddition}}
+<tr>
+<td><a href='/post/view?id={{.PostID}}'>{{.PostTitle}}</a></td>
+<td>{{.Text}}</td>
+<td>{{humanDate .CreatedAt}}</td>
+<td>#{{.ID}}</td>
+</tr>
+{{end}}
+</table>
+{{end}}  
+
+</div>
+
+
+<div class="personal-page-section">
+<a href="/promotion_requests">All promotion requests</a>
+<a href="/promotion_requests/create">I want to become a moderator</a>
+</div>
+    
+</div>
+
+{{end}}  

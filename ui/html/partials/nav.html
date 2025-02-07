@@ -1,0 +1,17 @@
+{{define "nav"}}
+<nav>
+    <a href='/'>Home</a>
+    {{if .IsAuthenticated}}
+        <a href="/post/create">Create post</a>
+        {{with eq .User.Role "admin"}}
+        <a href="/admin">ADM</a>
+        {{end}}
+        <a href="/user/personal-page"> {{.User.Username}} </a>
+        <a href="/user/notifications">Notifications: {{.NotificationsCount}}</a>
+        <a href="/logout">Logout</a>
+    {{else}}
+        <a href="/register">Register</a>
+        <a href="/login">Login</a>
+    {{end}}
+</nav>
+{{end}}

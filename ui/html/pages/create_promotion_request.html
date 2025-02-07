@@ -1,0 +1,16 @@
+{{define "title"}} Create Promotion Request {{end}}
+{{define "main"}}
+<h2>Create a New Promotion Request</h2>
+<form action="/promotion_requests/create/post" method="post">
+
+    <div class="form-group">
+        <label for="description">Please, write down below why you want to become a moderator and why we should choose you.</label><br>
+        {{with .FormErrors.description}}
+        <label class='error'>{{.}}</label>
+        {{end}}
+        <textarea id="description" name="description" rows="10" cols="80" required></textarea><br><br>
+    </div>
+
+    <input type="submit" value="Submit">
+</form>
+{{end}}
