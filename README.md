@@ -12,7 +12,6 @@ Implemented: advanced-features, authentication(google, github), image-upload, mo
 
 ## Contributors
 <ol>
-    <li>Abay Aliyev</li>
     <li>Adilzhan Shirbayev</li>
 </ol>
 
@@ -26,12 +25,7 @@ Implemented: advanced-features, authentication(google, github), image-upload, mo
     <li>Docker</li>
 </ul>
 
-## How to run
-By default, our project runs on :8433 port
-### Using Docker and makefile
-run ```make all``` if you running first time. <br>
-Alternative: ```make build``` to build, then ```make run``` to run, and open https://localhost:8433/ 
+## How to run testing
+run forum_advanced_test/assign6_test.go to test assignment 6
 
-### Using go run
-run ```go run ./cmd/web``` and open https://localhost:8433/ 
 
